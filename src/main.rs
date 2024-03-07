@@ -6,12 +6,17 @@ fn main() {
     // ["target/debug/minigrep"]
     let args: Vec<String> = env::args().collect::<Vec<String>>();
 
-    let (query, filename) = parse_config(&args);
+    let config = parse_config(&args);
 
-    let contents = read_contents_from_file(filename);
+    let contents = read_contents_from_file(&config.filename);
 }
 
-fn parse_config(args: &[String]) -> (&String, &String) {
+struct Config {
+    query: String,
+    filename: String,
+}
+
+fn parse_config(args: &[String]) -> Config {
     // the first argument is the path of the binary. By index 0 we will ignore it.
     let query: &String = &args[1];
     let filename: &String = &args[2];
@@ -20,7 +25,12 @@ fn parse_config(args: &[String]) -> (&String, &String) {
 
     println!("Searching for {}", query);
     println!("In file {}", filename);
-    (query, filename)
+
+    Config {
+        query: query.to_string(),
+        filename: filename.to_string(),
+
+    }
 }
 
 fn read_contents_from_file(filename: &String) -> String {
