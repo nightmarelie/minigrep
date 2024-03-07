@@ -3,5 +3,5 @@
 ## Usage
 
 ```bash
-cargo run -q haystack needle
+cargo run -q test sample.txt
 ```

@@ -10,4 +10,7 @@ fn main() {
     let filename: &String = &args[2];
 
     println!("{:?}", args);
+
+    println!("Searching for {}", query);
+    println!("In file {}", filename);
 }
