@@ -33,3 +33,21 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_config() {
+        let args = vec![
+            String::from("minigrep"),
+            String::from("query"),
+            String::from("filename"),
+        ];
+        let config = Config::new(&args).unwrap();
+
+        assert_eq!(config.query, "query");
+        assert_eq!(config.filename, "filename");
+    }
+}
