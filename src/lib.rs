@@ -35,6 +35,12 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    for line in contents.lines() {
+        if line.contains(query) {
+            return vec![line];
+        }
+    }
+
     vec![]
 }
 
@@ -55,6 +61,7 @@ mod tests {
         assert_eq!(config.filename, "filename");
     }
 
+    #[test]
     fn one_result() {
         let query = "duct";
         let contents = "\
