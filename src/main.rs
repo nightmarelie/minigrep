@@ -1,19 +1,21 @@
 use std::env;
 use std::fs;
 use std::process;
+use std::error::Error;
 
 fn main() {
     // by default, it will return the path of the binary
     // ["target/debug/minigrep"]
     let args: Vec<String> = env::args().collect::<Vec<String>>();
 
-    match Config::new(&args) {
-        Ok(config) => {
-            let contents = read_contents_from_file(&config.filename);
-        }
-        Err(e) => {
-            println!("Problem parsing arguments: {}", e);
-        }
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {}", err);
+        process::exit(1);
+    });
+
+    if let Err(e) = run(config) {
+        println!("Application error: {}", e);
+        process::exit(1);
     }
 }
 
@@ -42,10 +44,10 @@ impl Config {
 }
 
 
-fn read_contents_from_file(filename: &String) -> String {
-    let contents = fs::read_to_string(filename).expect("Something went wrong reading the file");
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
 
     println!("With text:\n{}", contents);
 
-    contents
+    Ok(())
 }
