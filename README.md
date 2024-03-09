@@ -4,4 +4,12 @@
 
 ```bash
 cargo run -q test sample.txt
+
+CASE_INSENSITIVE=false cargo run -q test sample.txt
+```
+
+## Run the tests
+
+```bash
+cargo test
 ```
