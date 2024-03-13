@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::env;
-use std::env::Args;
+use std::vec::IntoIter;
 
 pub struct Config {
     pub query: String,
@@ -10,7 +10,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(mut args: Args) -> Result<Config, &'static str> {
+    pub fn new(mut args: IntoIter<String>) -> Result<Config, &'static str> {
         args.next();
 
         // the first argument is the path of the binary. By index 0 we will ignore it.
@@ -89,7 +89,7 @@ mod tests {
             String::from("query"),
             String::from("filename"),
         ];
-        let config = Config::new(MockArgs::new(args)).unwrap();
+        let config = Config::new(args.into_iter()).unwrap();
 
         assert_eq!(config.query, "query");
         assert_eq!(config.filename, "filename");
