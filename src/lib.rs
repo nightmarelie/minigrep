@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::env;
+use std::env::Args;
 
 pub struct Config {
     pub query: String,
@@ -9,14 +10,19 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
+    pub fn new(mut args: Args) -> Result<Config, &'static str> {
+        args.next();
 
         // the first argument is the path of the binary. By index 0 we will ignore it.
-        let query = args[1].clone();
-        let filename = args[2].clone();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+        
+        let filename= match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file name"),
+        };
 
         println!("{:?}", args);
 
