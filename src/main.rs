@@ -6,9 +6,7 @@ use minigrep::Config;
 fn main() {
     // by default, it will return the path of the binary
     // ["target/debug/minigrep"]
-    let args: Vec<String> = env::args().collect::<Vec<String>>();
-
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
