@@ -58,6 +58,26 @@ pub fn search<'a>(query: &str, contents: &'a str, case_sensitive: bool) -> Vec<&
     }).collect()
 }
 
+pub struct MockArgs {
+    args: std::vec::IntoIter<String>,
+}
+
+impl MockArgs {
+    pub fn new(args: Vec<String>) -> MockArgs {
+        MockArgs {
+            args: args.into_iter(),
+        }
+    }
+}
+
+impl Iterator for MockArgs {
+    type Item = String;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.args.next()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -69,7 +89,7 @@ mod tests {
             String::from("query"),
             String::from("filename"),
         ];
-        let config = Config::new(args.into_iter()).unwrap();
+        let config = Config::new(MockArgs::new(args)).unwrap();
 
         assert_eq!(config.query, "query");
         assert_eq!(config.filename, "filename");
