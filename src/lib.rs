@@ -49,21 +49,13 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str, case_sensitive: bool) -> Vec<&'a str> {
-    let mut results = Vec::new();
-
-    for line in contents.lines() {
+    contents.lines().filter(|line| {
         if case_sensitive {
-            if line.contains(query) {
-                results.push(line);
-            }
+            line.contains(query)
         } else {
-            if line.to_lowercase().contains(&query.to_lowercase()) {
-                results.push(line);
-            }
+            line.to_lowercase().contains(&query.to_lowercase())
         }
-    }
-
-    results
+    }).collect()
 }
 
 #[cfg(test)]
@@ -77,7 +69,7 @@ mod tests {
             String::from("query"),
             String::from("filename"),
         ];
-        let config = Config::new(&args).unwrap();
+        let config = Config::new(args.into_iter()).unwrap();
 
         assert_eq!(config.query, "query");
         assert_eq!(config.filename, "filename");
