@@ -13,3 +13,9 @@ CASE_INSENSITIVE=false cargo run -q test sample.txt
 ```bash
 cargo test
 ```
+
+## Build the project
+
+```bash
+cargo build
+```
